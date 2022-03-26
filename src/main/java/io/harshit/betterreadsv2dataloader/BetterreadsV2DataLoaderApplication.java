@@ -22,9 +22,7 @@ public class BetterreadsV2DataLoaderApplication {
 
     @PostConstruct
     public void start() {
-        authorLoader.loadAuthors();
-        //initAuthors();
-        //initWorks();
+        //authorLoader.loadAuthors();
     }
 
 
