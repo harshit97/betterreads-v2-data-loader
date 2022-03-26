@@ -50,3 +50,6 @@ build/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+### Datastax secure connect ( certs, trust etc.)
+/src/main/resources/secure-connect-betterreads-v2.zip
