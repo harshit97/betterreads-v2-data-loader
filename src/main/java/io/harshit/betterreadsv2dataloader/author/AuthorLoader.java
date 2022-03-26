@@ -1,5 +1,6 @@
 package io.harshit.betterreadsv2dataloader.author;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Component
+@Slf4j
 public class AuthorLoader {
 
     @Autowired
@@ -34,6 +36,7 @@ public class AuthorLoader {
     private static ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
     public void loadAuthors() {
+        log.debug("Inside loadAuthors");
         Path path = Paths.get(authorDumpLocation);
         List<AuthorById> authorByIdList = new ArrayList<>();
         try {
@@ -45,13 +48,13 @@ public class AuthorLoader {
                     authorByIdList.add(authorById);
                 }
                 if (authorByIdList.size() == AUTHOR_BATCH_SIZE) {
-                    //executorService.submit(new AuthorLoadTask(authorByIdRepo, authorByIdList));
+                    executorService.submit(new AuthorLoadTask(authorByIdRepo, authorByIdList));
                     authorByIdList = new ArrayList<>();
                 }
             }
 
             if (!authorByIdList.isEmpty()) {
-                //executorService.submit(new AuthorLoadTask(authorByIdRepo, authorByIdList));
+                executorService.submit(new AuthorLoadTask(authorByIdRepo, authorByIdList));
             }
         } catch (IOException e) {
             e.printStackTrace();

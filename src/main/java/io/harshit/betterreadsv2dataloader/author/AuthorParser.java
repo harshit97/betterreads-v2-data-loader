@@ -1,9 +1,11 @@
 package io.harshit.betterreadsv2dataloader.author;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class AuthorParser {
 
     public AuthorById getAuthorByIdFromLine(String authorLine) {
@@ -30,17 +32,17 @@ public class AuthorParser {
             String authorId;
 
             if (key.equals("#")) {
-                System.out.println("Author Id not found! Returning null!");
+                log.error("key equals hash. Author Id not found! Returning null!");
                 return null;
             } else {
                 int lastSlash = key.lastIndexOf("/");
                 if (lastSlash < 0 || lastSlash + 1 == key.length()) {
-                    System.out.println("Author Id not found! Returning null!");
+                    log.error("Author Id not found! Returning null!");
                     return null;
                 }
                 authorId = key.substring(lastSlash + 1).trim();
                 if (authorId.isEmpty()) {
-                    System.out.println("Author Id not found! Returning null!");
+                    log.error("Author Id not found! Returning null!");
                     return null;
                 }
             }
