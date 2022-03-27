@@ -1,0 +1,28 @@
+data.dump.location:
+  author: # change to correct value
+  book: # change to correct value
+
+spring:
+  application:
+    name: betterreads-v2-data-loader
+  data:
+    cassandra:
+      keyspace-name: # change to correct value
+      username: # change to correct value
+      password: # change to correct value
+      schema-action: create-if-not-exists
+      request:
+        timeout: 20s
+      connection:
+        connect-timeout: 20s
+        init-query-timeout: 20s
+
+
+datastax.astra:
+  secure-connect-bundle: # change to correct value
+
+astra.db:
+  id: # change to correct value
+  region: # change to correct value
+  keyspace: # change to correct value
+  application.token: # change to correct value
