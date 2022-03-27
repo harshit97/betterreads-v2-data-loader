@@ -1,12 +1,11 @@
 package io.harshit.betterreadsv2dataloader.book;
 
-import io.harshit.betterreadsv2dataloader.author.AuthorById;
 import io.harshit.betterreadsv2dataloader.author.AuthorByIdRepo;
-import io.harshit.betterreadsv2dataloader.author.AuthorLoadTask;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Component
 public class BookLoader {
 
 
@@ -34,7 +34,7 @@ public class BookLoader {
 
     private static final int BOOK_BATCH_SIZE = 1000;
 
-    private static final Integer THREAD_POOL_SIZE = 1;
+    private static final Integer THREAD_POOL_SIZE = 2000;
 
     private static ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
@@ -50,13 +50,13 @@ public class BookLoader {
                     bookByIdList.add(bookById);
                 }
                 if (bookByIdList.size() == BOOK_BATCH_SIZE) {
-                    //executorService.submit(new BookLoadTask(bookByIdRepo, authorByIdRepo, bookByIdList));
+                    executorService.submit(new BookLoadTask(bookByIdRepo, authorByIdRepo, bookByIdList));
                     bookByIdList = new ArrayList<>();
                 }
             }
 
             if (!bookByIdList.isEmpty()) {
-                //executorService.submit(new BookLoadTask(bookByIdRepo, authorByIdRepo, bookByIdList));
+                executorService.submit(new BookLoadTask(bookByIdRepo, authorByIdRepo, bookByIdList));
             }
         } catch (IOException e) {
             e.printStackTrace();

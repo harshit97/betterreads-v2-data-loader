@@ -66,7 +66,15 @@ public class BookParser {
                     if (Objects.nonNull(authorArrayElement)) {
                         JSONObject authorObject = authorArrayElement.optJSONObject("author");
                         if (Objects.nonNull(authorObject)) {
-                            String authorId = authorObject.optString("key", "#").replace("/authors/", "");
+                            String authorId = authorObject.optString("key", "#");
+                            int lastSlash = authorId.lastIndexOf("/");
+                            if (lastSlash < 0 || lastSlash + 1 == authorId.length()) {
+                                continue;
+                            }
+                            authorId = authorId.substring(lastSlash + 1).trim();
+                            if (authorId.isEmpty()) {
+                                continue;
+                            }
                             authorIds.set(i, authorId);
                         }
                     }
@@ -93,7 +101,7 @@ public class BookParser {
             bookById.setPublishedDate(publishedDate);
 
             return bookById;
-        } catch (JSONException e) {
+        } catch (Exception e) {
             System.out.println("---- JSONException thrown ----");
             e.printStackTrace();
         }

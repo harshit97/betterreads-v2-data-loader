@@ -37,7 +37,7 @@ public class BookLoadTask implements Runnable {
                 continue;
             }
 
-            List<AuthorById> authorByIdList = authorByIdRepo.findByIdIn(authorIdList);
+            List<AuthorById> authorByIdList = authorByIdRepo.findByAuthorIdIn(authorIdList);
 
             if (authorByIdList.isEmpty()) {
                 continue;
